@@ -14,15 +14,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'lexik:jwt:check-config', description: 'Checks that the bundle is properly configured.')]
 final class CheckConfigCommand extends Command
 {
-    private KeyLoaderInterface $keyLoader;
-
-    private string $signatureAlgorithm;
-
-    public function __construct(KeyLoaderInterface $keyLoader, string $signatureAlgorithm)
+    public function __construct(private readonly KeyLoaderInterface $keyLoader, private readonly string $signatureAlgorithm)
     {
-        $this->keyLoader = $keyLoader;
-        $this->signatureAlgorithm = $signatureAlgorithm;
-
         parent::__construct();
     }
 

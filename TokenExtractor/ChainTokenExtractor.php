@@ -15,17 +15,14 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ChainTokenExtractor implements \IteratorAggregate, TokenExtractorInterface
 {
-    private array $map;
-
-    public function __construct(array $map)
+    public function __construct(private array $map)
     {
-        $this->map = $map;
     }
 
     /**
      * Adds a new token extractor to the map.
      */
-    public function addExtractor(TokenExtractorInterface $extractor)
+    public function addExtractor(TokenExtractorInterface $extractor): void
     {
         $this->map[] = $extractor;
     }
@@ -37,7 +34,7 @@ class ChainTokenExtractor implements \IteratorAggregate, TokenExtractorInterface
     *
     * @return bool True in case of success, false otherwise
     */
-    public function removeExtractor(\Closure $filter)
+    public function removeExtractor(\Closure $filter): bool
     {
         $filtered = array_filter($this->map, $filter);
 
@@ -54,7 +51,7 @@ class ChainTokenExtractor implements \IteratorAggregate, TokenExtractorInterface
     /**
      * Clears the token extractor map.
      */
-    public function clearMap()
+    public function clearMap(): void
     {
         $this->map = [];
     }

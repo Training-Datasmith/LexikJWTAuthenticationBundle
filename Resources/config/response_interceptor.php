@@ -5,7 +5,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationFailureHandler;
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Authentication\AuthenticationSuccessHandler;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('lexik_jwt_authentication.handler.authentication_success', AuthenticationSuccessHandler::class)

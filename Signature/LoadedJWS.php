@@ -15,20 +15,10 @@ final class LoadedJWS
     public const VERIFIED = 'verified';
     public const EXPIRED = 'expired';
     public const INVALID = 'invalid';
-
-    private array $header;
-    private array $payload;
     private ?string $state = null;
-    private int $clockSkew;
-    private bool $shouldCheckExpiration;
 
-    public function __construct(array $payload, bool $isVerified, bool $shouldCheckExpiration = true, array $header = [], int $clockSkew = 0)
+    public function __construct(private array $payload, bool $isVerified, private readonly bool $shouldCheckExpiration = true, private readonly array $header = [], private readonly int $clockSkew = 0)
     {
-        $this->payload = $payload;
-        $this->header = $header;
-        $this->shouldCheckExpiration = $shouldCheckExpiration;
-        $this->clockSkew = $clockSkew;
-
         if (true === $isVerified) {
             $this->state = self::VERIFIED;
         }

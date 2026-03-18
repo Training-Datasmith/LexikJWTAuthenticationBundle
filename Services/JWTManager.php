@@ -25,17 +25,8 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  */
 class JWTManager implements JWTTokenManagerInterface
 {
-    protected JWTEncoderInterface $jwtEncoder;
-    protected EventDispatcherInterface $dispatcher;
-    protected string $userIdClaim;
-    private $payloadEnrichment;
-
-    public function __construct(JWTEncoderInterface $encoder, EventDispatcherInterface $dispatcher, string $userIdClaim, ?PayloadEnrichmentInterface $payloadEnrichment = null)
+    public function __construct(protected JWTEncoderInterface $jwtEncoder, protected EventDispatcherInterface $dispatcher, protected string $userIdClaim, private readonly ?PayloadEnrichmentInterface $payloadEnrichment = new NullEnrichment())
     {
-        $this->jwtEncoder = $encoder;
-        $this->dispatcher = $dispatcher;
-        $this->userIdClaim = $userIdClaim;
-        $this->payloadEnrichment = $payloadEnrichment ?? new NullEnrichment();
     }
 
     /**

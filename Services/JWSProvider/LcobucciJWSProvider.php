@@ -33,28 +33,19 @@ use Symfony\Component\Clock\Clock;
  */
 class LcobucciJWSProvider implements JWSProviderInterface
 {
-    private KeyLoaderInterface $keyLoader;
-    private ClockInterface $clock;
-    private Signer $signer;
-    private ?int $ttl;
-    private ?int $clockSkew;
-    private bool $allowNoExpiration;
+    private readonly ClockInterface $clock;
+    private readonly Signer $signer;
 
     /**
      * @throws \InvalidArgumentException If the given crypto engine is not supported
      */
-    public function __construct(KeyLoaderInterface $keyLoader, string $signatureAlgorithm, ?int $ttl, ?int $clockSkew, bool $allowNoExpiration = false, ?ClockInterface $clock = null)
+    public function __construct(private readonly KeyLoaderInterface $keyLoader, string $signatureAlgorithm, private readonly ?int $ttl, private readonly ?int $clockSkew, private readonly bool $allowNoExpiration = false, ?ClockInterface $clock = null)
     {
         if (null === $clock) {
             $clock = Clock::get();
         }
-
-        $this->keyLoader = $keyLoader;
         $this->clock = $clock;
         $this->signer = $this->getSignerForAlgorithm($signatureAlgorithm);
-        $this->ttl = $ttl;
-        $this->clockSkew = $clockSkew;
-        $this->allowNoExpiration = $allowNoExpiration;
     }
 
     /**
@@ -98,7 +89,7 @@ class LcobucciJWSProvider implements JWSProviderInterface
 
         $token = $this->getSignedToken($jws);
 
-        return new CreatedJWS((string) $token, true);
+        return new CreatedJWS($token, true);
     }
 
     /**
@@ -125,7 +116,7 @@ class LcobucciJWSProvider implements JWSProviderInterface
         );
     }
 
-    private function getSignerForAlgorithm($signatureAlgorithm): Signer
+    private function getSignerForAlgorithm(string $signatureAlgorithm): Signer
     {
         $signerMap = [
             'HS256' => Sha256::class,

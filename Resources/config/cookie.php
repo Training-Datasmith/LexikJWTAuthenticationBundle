@@ -4,7 +4,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Cookie\JWTCookieProvider;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('lexik_jwt_authentication.cookie_provider', JWTCookieProvider::class)

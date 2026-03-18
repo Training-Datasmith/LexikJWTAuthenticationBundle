@@ -23,7 +23,7 @@ final class AccessTokenBuilder
     /**
      * @var null|JWEBuilder
      */
-    private $jweBuilder = null;
+    private $jweBuilder;
 
     /**
      * @var JWK
@@ -35,28 +35,14 @@ final class AccessTokenBuilder
      */
     private $encryptionKey;
 
-    /**
-     * @var string
-     */
-    private $signatureAlgorithm;
+    private readonly string $signatureAlgorithm;
 
-    /**
-     * @var string|null
-     */
-    private $keyEncryptionAlgorithm;
+    private readonly ?string $keyEncryptionAlgorithm;
 
-    /**
-     * @var string|null
-     */
-    private $contentEncryptionAlgorithm;
-
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $dispatcher;
+    private readonly ?string $contentEncryptionAlgorithm;
 
     public function __construct(
-        EventDispatcherInterface $dispatcher,
+        private readonly EventDispatcherInterface $dispatcher,
         JWSBuilderFactory $jwsBuilderFactory,
         ?JWEBuilderFactory $jweBuilderFactory,
         string $signatureAlgorithm,
@@ -74,7 +60,6 @@ final class AccessTokenBuilder
         $this->signatureAlgorithm = $signatureAlgorithm;
         $this->keyEncryptionAlgorithm = $keyEncryptionAlgorithm;
         $this->contentEncryptionAlgorithm = $contentEncryptionAlgorithm;
-        $this->dispatcher = $dispatcher;
     }
 
     public function build(array $header, array $claims): string
@@ -82,7 +67,7 @@ final class AccessTokenBuilder
         $token = $this->buildJWS($header, $claims);
 
         if ($this->jweBuilder !== null) {
-            $token = $this->buildJWE($claims, $token);
+            return $this->buildJWE($claims, $token);
         }
 
         return $token;
@@ -104,9 +89,8 @@ final class AccessTokenBuilder
             ->addSignature($this->signatureKey, $header)
             ->build()
         ;
-        $token = (new JwsCompactSerializer())->serialize($jws);
 
-        return $token;
+        return (new JwsCompactSerializer())->serialize($jws);
     }
 
     /**

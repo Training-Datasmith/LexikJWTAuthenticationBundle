@@ -15,18 +15,8 @@ use Symfony\Component\Security\Http\Event\LogoutEvent;
 
 class BlockJWTListener
 {
-    private $blockedTokenManager;
-    private $tokenExtractor;
-    private $jwtManager;
-
-    public function __construct(
-        BlockedTokenManagerInterface $blockedTokenManager,
-        TokenExtractorInterface      $tokenExtractor,
-        JWTTokenManagerInterface     $jwtManager
-    ) {
-        $this->blockedTokenManager = $blockedTokenManager;
-        $this->tokenExtractor = $tokenExtractor;
-        $this->jwtManager = $jwtManager;
+    public function __construct(private readonly BlockedTokenManagerInterface $blockedTokenManager, private readonly TokenExtractorInterface      $tokenExtractor, private readonly JWTTokenManagerInterface     $jwtManager)
+    {
     }
 
     public function onLoginFailure(LoginFailureEvent $event): void
@@ -60,7 +50,7 @@ class BlockJWTListener
 
         try {
             $this->blockedTokenManager->add($payload);
-        } catch (MissingClaimException $e) {
+        } catch (MissingClaimException) {
             // We can't block a token missing the claims our system requires, so silently ignore this one
         }
     }

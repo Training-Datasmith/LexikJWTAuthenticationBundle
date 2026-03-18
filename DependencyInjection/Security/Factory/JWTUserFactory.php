@@ -37,7 +37,7 @@ final class JWTUserFactory implements UserProviderFactoryInterface
                     ->cannotBeEmpty()
                     ->defaultValue(JWTUser::class)
                     ->validate()
-                        ->ifTrue(fn ($class) => !is_subclass_of($class, JWTUserInterface::class))
+                        ->ifTrue(fn ($class): bool => !is_subclass_of($class, JWTUserInterface::class))
                         ->thenInvalid('The %s class must implement ' . JWTUserInterface::class . ' for using the "lexik_jwt" user provider.')
                     ->end()
                 ->end()

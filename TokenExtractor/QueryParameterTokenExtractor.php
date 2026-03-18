@@ -11,11 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class QueryParameterTokenExtractor implements TokenExtractorInterface
 {
-    protected string $parameterName;
-
-    public function __construct(string $parameterName)
+    public function __construct(protected string $parameterName)
     {
-        $this->parameterName = $parameterName;
     }
 
     /**

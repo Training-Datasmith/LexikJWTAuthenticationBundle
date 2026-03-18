@@ -6,7 +6,7 @@ use Jose\Component\Checker\IssuedAtChecker;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\WebToken\AccessTokenLoader;
 use Psr\Clock\ClockInterface;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('lexik_jwt_authentication.access_token_loader', AccessTokenLoader::class)

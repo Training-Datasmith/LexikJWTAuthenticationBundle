@@ -7,7 +7,7 @@ use Jose\Bundle\JoseFramework\Services\JWSBuilderFactory;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\WebToken\AccessTokenBuilder;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('lexik_jwt_authentication.access_token_builder', AccessTokenBuilder::class)

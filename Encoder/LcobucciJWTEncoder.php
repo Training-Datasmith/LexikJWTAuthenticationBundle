@@ -13,17 +13,14 @@ use Lexik\Bundle\JWTAuthenticationBundle\Services\JWSProvider\JWSProviderInterfa
  */
 class LcobucciJWTEncoder implements JWTEncoderInterface, HeaderAwareJWTEncoderInterface
 {
-    protected JWSProviderInterface $jwsProvider;
-
-    public function __construct(JWSProviderInterface $jwsProvider)
+    public function __construct(protected JWSProviderInterface $jwsProvider)
     {
-        $this->jwsProvider = $jwsProvider;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function encode(array $payload, array $header = [])
+    public function encode(array $payload, array $header = []): string
     {
         try {
             $jws = $this->jwsProvider->create($payload, $header);
@@ -41,7 +38,7 @@ class LcobucciJWTEncoder implements JWTEncoderInterface, HeaderAwareJWTEncoderIn
     /**
      * {@inheritdoc}
      */
-    public function decode($token)
+    public function decode($token): array
     {
         try {
             $jws = $this->jwsProvider->load($token);

@@ -10,31 +10,11 @@ use Symfony\Component\HttpKernel\Kernel;
 /**
  * Creates secure JWT cookies.
  */
-final class JWTCookieProvider
+final readonly class JWTCookieProvider
 {
-    private ?string $defaultName;
-    private ?int $defaultLifetime;
-    private ?string $defaultSameSite;
-    private ?string $defaultPath;
-    private ?string $defaultDomain;
-    private bool $defaultSecure;
-    private bool $defaultHttpOnly;
-    private array $defaultSplit;
-    private bool $defaultPartitioned;
-
-    public function __construct(?string $defaultName = null, ?int $defaultLifetime = 0, ?string $defaultSameSite = Cookie::SAMESITE_LAX, ?string $defaultPath = '/', ?string $defaultDomain = null, bool $defaultSecure = true, bool $defaultHttpOnly = true, array $defaultSplit = [], bool $defaultPartitioned = false)
+    public function __construct(private ?string $defaultName = null, private ?int $defaultLifetime = 0, private ?string $defaultSameSite = Cookie::SAMESITE_LAX, private ?string $defaultPath = '/', private ?string $defaultDomain = null, private bool $defaultSecure = true, private bool $defaultHttpOnly = true, private array $defaultSplit = [], private bool $defaultPartitioned = false)
     {
-        $this->defaultName = $defaultName;
-        $this->defaultLifetime = $defaultLifetime;
-        $this->defaultSameSite = $defaultSameSite;
-        $this->defaultPath = $defaultPath;
-        $this->defaultDomain = $defaultDomain;
-        $this->defaultSecure = $defaultSecure;
-        $this->defaultHttpOnly = $defaultHttpOnly;
-        $this->defaultSplit = $defaultSplit;
-        $this->defaultPartitioned = $defaultPartitioned;
-
-        if ($defaultPartitioned && Kernel::VERSION < '6.4') {
+        if ($this->defaultPartitioned && Kernel::VERSION < '6.4') {
             throw new \LogicException(sprintf('The `partitioned` option for cookies is only available for Symfony 6.4 and above. You are currently on version %s', Kernel::VERSION));
         }
     }

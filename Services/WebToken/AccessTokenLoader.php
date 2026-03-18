@@ -17,18 +17,12 @@ use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTDecodeFailureException;
 final class AccessTokenLoader
 {
     private $jwsLoader;
-    private $jwsHeaderCheckerManager;
     private $claimCheckerManager;
     private $jweLoader;
     private $signatureKeyset;
     private $encryptionKeyset;
 
-    /**
-     * @var string[]
-     */
-    private $mandatoryClaims;
-
-    private $continueOnDecryptionFailure;
+    private ?bool $continueOnDecryptionFailure;
 
     public function __construct(
         JWSLoaderFactory            $jwsLoaderFactory,
@@ -36,7 +30,10 @@ final class AccessTokenLoader
         ClaimCheckerManagerFactory  $claimCheckerManagerFactory,
         array                       $claimChecker,
         array                       $jwsHeaderChecker,
-        array                       $mandatoryClaims,
+        /**
+         * @var string[]
+         */
+        private readonly array                       $mandatoryClaims,
         array                       $signatureAlgorithms,
         string                      $signatureKeyset,
         ?bool                       $continueOnDecryptionFailure,
@@ -53,7 +50,6 @@ final class AccessTokenLoader
         $this->signatureKeyset = JWKSet::createFromJson($signatureKeyset);
         $this->encryptionKeyset = $encryptionKeyset ? JWKSet::createFromJson($encryptionKeyset) : null;
         $this->claimCheckerManager = $claimCheckerManagerFactory->create($claimChecker);
-        $this->mandatoryClaims = $mandatoryClaims;
     }
 
     public function load(string $token): array
@@ -76,29 +72,13 @@ final class AccessTokenLoader
      */
     private function loadJWS(string $token): array
     {
-        $payload = null;
-        $data = null;
         $signature = null;
         try {
             $jws = $this->jwsLoader->loadAndVerifyWithKeySet($token, $this->signatureKeyset, $signature);
-        } catch (\Throwable $e) {
+        } catch (\Throwable) {
             throw new JWTDecodeFailureException(JWTDecodeFailureException::INVALID_TOKEN, 'Invalid token. The token cannot be loaded or the signature cannot be verified.');
         }
-        if ($signature !== 0) {
-            throw new JWTDecodeFailureException(JWTDecodeFailureException::INVALID_TOKEN, 'Invalid token. The token shall contain only one signature.');
-        }
-
-        $payload = $jws->getPayload();
-        if (!$payload) {
-            throw new JWTDecodeFailureException(JWTDecodeFailureException::INVALID_TOKEN, 'Invalid payload. The token shall contain claims.');
-        }
-
-        $data = json_decode($payload, true);
-        if (!is_array($data)) {
-            throw new JWTDecodeFailureException(JWTDecodeFailureException::INVALID_TOKEN, 'Invalid payload. The token shall contain claims.');
-        }
-
-        return $data;
+        throw new JWTDecodeFailureException(JWTDecodeFailureException::INVALID_TOKEN, 'Invalid token. The token shall contain only one signature.');
     }
 
     private function loadJWE(string $token): string

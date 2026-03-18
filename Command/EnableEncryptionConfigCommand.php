@@ -41,17 +41,10 @@ final class EnableEncryptionConfigCommand extends AbstractConfigCommand
      */
     protected static $defaultName = 'lexik:jwt:enable-encryption';
 
-    /**
-     * @var ?AlgorithmManagerFactory
-     */
-    private $algorithmManagerFactory;
-
     public function __construct(
-        ?AlgorithmManagerFactory $algorithmManagerFactory = null
+        private readonly ?AlgorithmManagerFactory $algorithmManagerFactory = null
     ) {
         parent::__construct();
-
-        $this->algorithmManagerFactory = $algorithmManagerFactory;
     }
 
     /**
@@ -73,8 +66,6 @@ final class EnableEncryptionConfigCommand extends AbstractConfigCommand
 
     /**
      * {@inheritdoc}
-     *
-     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -86,20 +77,12 @@ final class EnableEncryptionConfigCommand extends AbstractConfigCommand
 
         $algorithms = $this->algorithmManagerFactory->all();
         $availableKeyEncryptionAlgorithms = array_map(
-            static function (Algorithm $algorithm): string {
-                return $algorithm->name();
-            },
-            array_filter($algorithms, static function (Algorithm $algorithm): bool {
-                return ($algorithm instanceof KeyEncryptionAlgorithm && $algorithm->name() !== 'dir');
-            })
+            static fn(Algorithm $algorithm): string => $algorithm->name(),
+            array_filter($algorithms, static fn(Algorithm $algorithm): bool => $algorithm instanceof KeyEncryptionAlgorithm && $algorithm->name() !== 'dir')
         );
         $availableContentEncryptionAlgorithms = array_map(
-            static function (Algorithm $algorithm): string {
-                return $algorithm->name();
-            },
-            array_filter($algorithms, static function (Algorithm $algorithm): bool {
-                return $algorithm instanceof ContentEncryptionAlgorithm;
-            })
+            static fn(Algorithm $algorithm): string => $algorithm->name(),
+            array_filter($algorithms, static fn(Algorithm $algorithm): bool => $algorithm instanceof ContentEncryptionAlgorithm)
         );
 
         $keyEncryptionAlgorithmAlias = $io->choice('Key Encryption Algorithm', $availableKeyEncryptionAlgorithms);
@@ -149,18 +132,13 @@ final class EnableEncryptionConfigCommand extends AbstractConfigCommand
     private function generatePublicKeyset(JWK $key, string $algorithm): JWKSet
     {
         $keyset = new JWKSet([$key->toPublic()]);
-        switch ($key->get('kty')) {
-            case 'oct':
-                return $this->withOctKeys($keyset, $algorithm);
-            case 'OKP':
-                return $this->withOkpKeys($keyset, $algorithm, $key->get('crv'));
-            case 'EC':
-                return $this->withEcKeys($keyset, $algorithm, $key->get('crv'));
-            case 'RSA':
-                return $this->withRsaKeys($keyset, $algorithm);
-            default:
-                throw new \InvalidArgumentException('Unsupported key type.');
-        }
+        return match ($key->get('kty')) {
+            'oct' => $this->withOctKeys($keyset, $algorithm),
+            'OKP' => $this->withOkpKeys($keyset, $algorithm, $key->get('crv')),
+            'EC' => $this->withEcKeys($keyset, $algorithm, $key->get('crv')),
+            'RSA' => $this->withRsaKeys($keyset, $algorithm),
+            default => throw new \InvalidArgumentException('Unsupported key type.'),
+        };
     }
 
     private function withOctKeys(JWKSet $keyset, string $algorithm): JWKSet
@@ -200,18 +178,13 @@ final class EnableEncryptionConfigCommand extends AbstractConfigCommand
     private function generatePrivateKey(KeyEncryptionAlgorithm $algorithm): JWK
     {
         $keyType = current($algorithm->allowedKeyTypes());
-        switch ($keyType) {
-            case 'oct':
-                return $this->createOctKey($this->getKeySize($algorithm->name()), $algorithm->name());
-            case 'OKP':
-                return $this->createOkpKey('X25519', $algorithm->name());
-            case 'EC':
-                return $this->createEcKey('P-256', $algorithm->name());
-            case 'RSA':
-                return $this->createRsaKey($this->getKeySize($algorithm->name()), $algorithm->name());
-            default:
-                throw new \InvalidArgumentException('Unsupported key type.');
-        }
+        return match ($keyType) {
+            'oct' => $this->createOctKey($this->getKeySize($algorithm->name()), $algorithm->name()),
+            'OKP' => $this->createOkpKey('X25519', $algorithm->name()),
+            'EC' => $this->createEcKey('P-256', $algorithm->name()),
+            'RSA' => $this->createRsaKey($this->getKeySize($algorithm->name()), $algorithm->name()),
+            default => throw new \InvalidArgumentException('Unsupported key type.'),
+        };
     }
 
     private function checkRequirements(): void
@@ -316,26 +289,13 @@ final class EnableEncryptionConfigCommand extends AbstractConfigCommand
 
     private function getKeySize(string $algorithm): int
     {
-        switch ($algorithm) {
-            case 'RSA1_5':
-            case 'RSA-OAEP':
-            case 'RSA-OAEP-256':
-                return 4096;
-            case 'A128KW':
-            case 'A128GCMKW':
-            case 'PBES2-HS256+A128KW':
-                return 128;
-            case 'A192KW':
-            case 'A192GCMKW':
-            case 'PBES2-HS384+A192KW':
-                return 192;
-            case 'A256KW':
-            case 'A256GCMKW':
-            case 'PBES2-HS512+A256KW':
-                return 256;
-            default:
-                throw new \LogicException('Unsupported algorithm');
-        }
+        return match ($algorithm) {
+            'RSA1_5', 'RSA-OAEP', 'RSA-OAEP-256' => 4096,
+            'A128KW', 'A128GCMKW', 'PBES2-HS256+A128KW' => 128,
+            'A192KW', 'A192GCMKW', 'PBES2-HS384+A192KW' => 192,
+            'A256KW', 'A256GCMKW', 'PBES2-HS512+A256KW' => 256,
+            default => throw new \LogicException('Unsupported algorithm'),
+        };
     }
 
     private function getOptions(string $algorithm): array

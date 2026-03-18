@@ -5,7 +5,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use Lexik\Bundle\JWTAuthenticationBundle\OpenApi\OpenApiFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('lexik_jwt_authentication.api_platform.openapi.factory', OpenApiFactory::class)

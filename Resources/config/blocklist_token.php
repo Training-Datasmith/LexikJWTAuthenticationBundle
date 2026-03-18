@@ -9,7 +9,7 @@ use Lexik\Bundle\JWTAuthenticationBundle\Services\BlockedTokenManagerInterface;
 use Symfony\Component\Security\Http\Event\LoginFailureEvent;
 use Symfony\Component\Security\Http\Event\LogoutEvent;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('lexik_jwt_authentication.event_listener.block_jwt_listener', BlockJWTListener::class)

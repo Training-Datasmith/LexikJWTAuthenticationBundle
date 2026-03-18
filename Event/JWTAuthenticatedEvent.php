@@ -10,12 +10,10 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class JWTAuthenticatedEvent extends Event
 {
-    protected array $payload;
     protected TokenInterface $token;
 
-    public function __construct(array $payload, TokenInterface $token)
+    public function __construct(protected array $payload, TokenInterface $token)
     {
-        $this->payload = $payload;
         $this->token = $token;
     }
 
@@ -24,7 +22,7 @@ class JWTAuthenticatedEvent extends Event
         return $this->payload;
     }
 
-    public function setPayload(array $payload)
+    public function setPayload(array $payload): void
     {
         $this->payload = $payload;
     }

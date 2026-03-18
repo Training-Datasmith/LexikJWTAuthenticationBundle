@@ -11,19 +11,12 @@ namespace Lexik\Bundle\JWTAuthenticationBundle\Security\User;
  */
 class JWTUser implements JWTUserInterface
 {
-    /** @var non-empty-string */
-    private string $userIdentifier;
-    /** @var string[] */
-    private array $roles;
-
     /**
      * @param non-empty-string $userIdentifier
      * @param string[]         $roles
      */
-    public function __construct(string $userIdentifier, array $roles = [])
+    public function __construct(private readonly string $userIdentifier, private readonly array $roles = [])
     {
-        $this->userIdentifier = $userIdentifier;
-        $this->roles = $roles;
     }
 
     /**

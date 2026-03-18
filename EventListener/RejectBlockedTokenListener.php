@@ -9,11 +9,8 @@ use Lexik\Bundle\JWTAuthenticationBundle\Services\BlockedTokenManagerInterface;
 
 class RejectBlockedTokenListener
 {
-    private $blockedTokenManager;
-
-    public function __construct(BlockedTokenManagerInterface $blockedTokenManager)
+    public function __construct(private readonly BlockedTokenManagerInterface $blockedTokenManager)
     {
-        $this->blockedTokenManager = $blockedTokenManager;
     }
 
     /**

@@ -8,7 +8,7 @@ use Lexik\Bundle\JWTAuthenticationBundle\Command\GenerateKeyPairCommand;
 use Lexik\Bundle\JWTAuthenticationBundle\Command\GenerateTokenCommand;
 use Lexik\Bundle\JWTAuthenticationBundle\Command\MigrateConfigCommand;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('lexik_jwt_authentication.check_config_command', CheckConfigCommand::class)

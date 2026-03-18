@@ -5,7 +5,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\WebTokenEncoder;
 use Lexik\Bundle\JWTAuthenticationBundle\Subscriber\AdditionalAccessTokenClaimsAndHeaderSubscriber;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('lexik_jwt_authentication.encoder.web_token', WebTokenEncoder::class)

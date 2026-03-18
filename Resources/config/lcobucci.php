@@ -6,7 +6,7 @@ use Lexik\Bundle\JWTAuthenticationBundle\Encoder\LcobucciJWTEncoder;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWSProvider\JWSProviderInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWSProvider\LcobucciJWSProvider;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('lexik_jwt_authentication.encoder.lcobucci', LcobucciJWTEncoder::class)

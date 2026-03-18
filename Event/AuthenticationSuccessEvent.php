@@ -13,13 +13,11 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 class AuthenticationSuccessEvent extends Event
 {
-    protected array $data;
     protected UserInterface $user;
     protected Response $response;
 
-    public function __construct(array $data, UserInterface $user, Response $response)
+    public function __construct(protected array $data, UserInterface $user, Response $response)
     {
-        $this->data = $data;
         $this->user = $user;
         $this->response = $response;
     }

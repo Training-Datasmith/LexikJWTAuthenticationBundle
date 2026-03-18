@@ -37,24 +37,16 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class JWTAuthenticator extends AbstractAuthenticator implements AuthenticationEntryPointInterface
 {
-    private TokenExtractorInterface $tokenExtractor;
-    private JWTTokenManagerInterface $jwtManager;
-    private EventDispatcherInterface $eventDispatcher;
-    private UserProviderInterface $userProvider;
-    private ?TranslatorInterface $translator;
+    private readonly UserProviderInterface $userProvider;
 
     public function __construct(
-        JWTTokenManagerInterface $jwtManager,
-        EventDispatcherInterface $eventDispatcher,
-        TokenExtractorInterface $tokenExtractor,
+        private readonly JWTTokenManagerInterface $jwtManager,
+        private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly TokenExtractorInterface $tokenExtractor,
         UserProviderInterface $userProvider,
-        ?TranslatorInterface $translator = null
+        private readonly ?TranslatorInterface $translator = null
     ) {
-        $this->tokenExtractor = $tokenExtractor;
-        $this->jwtManager = $jwtManager;
-        $this->eventDispatcher = $eventDispatcher;
         $this->userProvider = $userProvider;
-        $this->translator = $translator;
     }
 
     /**
@@ -102,7 +94,7 @@ class JWTAuthenticator extends AbstractAuthenticator implements AuthenticationEn
         $passport = new SelfValidatingPassport(
             new UserBadge(
                 (string) $payload[$idClaim],
-                fn ($userIdentifier) => $this->loadUser($payload, $userIdentifier)
+                fn (string $userIdentifier): \Symfony\Component\Security\Core\User\UserInterface => $this->loadUser($payload, $userIdentifier)
             )
         );
 
@@ -194,7 +186,7 @@ class JWTAuthenticator extends AbstractAuthenticator implements AuthenticationEn
                     }
 
                     return $provider->loadUserByIdentifier($identity);
-                } catch (AuthenticationException $e) {
+                } catch (AuthenticationException) {
                     // try next one
                 }
             }

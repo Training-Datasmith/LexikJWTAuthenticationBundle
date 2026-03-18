@@ -7,16 +7,10 @@ use Lexik\Bundle\JWTAuthenticationBundle\Events;
 use Symfony\Component\Clock\Clock;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-final class AdditionalAccessTokenClaimsAndHeaderSubscriber implements EventSubscriberInterface
+final readonly class AdditionalAccessTokenClaimsAndHeaderSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var int|null
-     */
-    private $ttl;
-
-    public function __construct(?int $ttl)
+    public function __construct(private ?int $ttl)
     {
-        $this->ttl = $ttl;
     }
 
     public static function getSubscribedEvents(): array

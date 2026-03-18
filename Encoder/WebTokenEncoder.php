@@ -13,28 +13,16 @@ use Lexik\Bundle\JWTAuthenticationBundle\Services\WebToken\AccessTokenLoader;
  *
  * @author Florent Morsellis <florent.morselli@spomky-labs.com>
  */
-final class WebTokenEncoder implements HeaderAwareJWTEncoderInterface
+final readonly class WebTokenEncoder implements HeaderAwareJWTEncoderInterface
 {
-    /**
-     * @var AccessTokenBuilder|null
-     */
-    private $accessTokenBuilder;
-
-    /**
-     * @var AccessTokenLoader|null
-     */
-    private $accessTokenLoader;
-
-    public function __construct(?AccessTokenBuilder $accessTokenBuilder, ?AccessTokenLoader $accessTokenLoader)
+    public function __construct(private ?AccessTokenBuilder $accessTokenBuilder, private ?AccessTokenLoader $accessTokenLoader)
     {
-        $this->accessTokenBuilder = $accessTokenBuilder;
-        $this->accessTokenLoader = $accessTokenLoader;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function encode(array $payload, array $header = [])
+    public function encode(array $payload, array $header = []): string
     {
         if (!$this->accessTokenBuilder) {
             throw new \LogicException('The access token issuance features are not enabled.');
@@ -50,16 +38,12 @@ final class WebTokenEncoder implements HeaderAwareJWTEncoderInterface
     /**
      * {@inheritdoc}
      */
-    public function decode($token)
+    public function decode($token): array
     {
         if (!$this->accessTokenLoader) {
             throw new \LogicException('The access token verification features are not enabled.');
         }
 
-        try {
-            return $this->accessTokenLoader->load($token);
-        } catch (JWTFailureException $e) {
-            throw $e;
-        }
+        return $this->accessTokenLoader->load($token);
     }
 }

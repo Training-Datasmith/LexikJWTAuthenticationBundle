@@ -10,7 +10,7 @@ use Lexik\Bundle\JWTAuthenticationBundle\TokenExtractor\QueryParameterTokenExtra
 use Lexik\Bundle\JWTAuthenticationBundle\TokenExtractor\SplitCookieExtractor;
 use Lexik\Bundle\JWTAuthenticationBundle\TokenExtractor\TokenExtractorInterface;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('lexik_jwt_authentication.extractor.chain_extractor', ChainTokenExtractor::class)

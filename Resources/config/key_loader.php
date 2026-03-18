@@ -4,7 +4,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Lexik\Bundle\JWTAuthenticationBundle\Services\KeyLoader\RawKeyLoader;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('lexik_jwt_authentication.key_loader.abstract')

@@ -11,17 +11,8 @@ namespace Lexik\Bundle\JWTAuthenticationBundle\Services\KeyLoader;
  */
 abstract class AbstractKeyLoader implements KeyLoaderInterface
 {
-    private ?string $signingKey;
-    private ?string $publicKey;
-    private ?string $passphrase;
-    private array $additionalPublicKeys;
-
-    public function __construct(?string $signingKey = null, ?string $publicKey = null, ?string $passphrase = null, array $additionalPublicKeys = [])
+    public function __construct(private readonly ?string $signingKey = null, private readonly ?string $publicKey = null, private readonly ?string $passphrase = null, private readonly array $additionalPublicKeys = [])
     {
-        $this->signingKey = $signingKey;
-        $this->publicKey = $publicKey;
-        $this->passphrase = $passphrase;
-        $this->additionalPublicKeys = $additionalPublicKeys;
     }
 
     /**
@@ -64,7 +55,7 @@ abstract class AbstractKeyLoader implements KeyLoaderInterface
         return $contents;
     }
 
-    private function readKey($type): ?string
+    private function readKey(string $type): ?string
     {
         $isPublic = self::TYPE_PUBLIC === $type;
         $key = $isPublic ? $this->publicKey : $this->signingKey;

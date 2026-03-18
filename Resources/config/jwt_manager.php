@@ -7,7 +7,7 @@ use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\PayloadEnrichment\ChainEnrichment;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\PayloadEnrichment\RandomJtiEnrichment;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('lexik_jwt_authentication.jwt_manager', JWTManager::class)

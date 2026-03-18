@@ -11,16 +11,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 final class JWTUserProvider implements PayloadAwareUserProviderInterface
 {
-    private string $class;
-
     private array $cache = [];
 
     /**
      * @param string $class The {@link JWTUserInterface} implementation FQCN for which to provide instances
      */
-    public function __construct(string $class)
+    public function __construct(private readonly string $class)
     {
-        $this->class = $class;
     }
 
     /**

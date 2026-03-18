@@ -7,15 +7,10 @@ namespace Lexik\Bundle\JWTAuthenticationBundle\Signature;
  *
  * @author Robin Chalas <robin.chalas@gmail.com>
  */
-final class CreatedJWS
+final readonly class CreatedJWS
 {
-    private string $token;
-    private bool $signed;
-
-    public function __construct(string $token, bool $isSigned)
+    public function __construct(private string $token, private bool $signed)
     {
-        $this->token = $token;
-        $this->signed = $isSigned;
     }
 
     public function isSigned(): bool

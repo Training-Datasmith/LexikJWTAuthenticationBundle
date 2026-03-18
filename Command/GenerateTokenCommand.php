@@ -20,16 +20,9 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 #[AsCommand(name: 'lexik:jwt:generate-token', description: 'Generates a JWT token for a given user.')]
 class GenerateTokenCommand extends Command
 {
-    private JWTTokenManagerInterface $tokenManager;
-
-    /** @var \Traversable<int, UserProviderInterface> */
-    private \Traversable $userProviders;
-
-    public function __construct(JWTTokenManagerInterface $tokenManager, \Traversable $userProviders)
+    public function __construct(private readonly JWTTokenManagerInterface $tokenManager, /** @var \Traversable<int, UserProviderInterface> */
+    private readonly \Traversable $userProviders)
     {
-        $this->tokenManager = $tokenManager;
-        $this->userProviders = $userProviders;
-
         parent::__construct();
     }
 

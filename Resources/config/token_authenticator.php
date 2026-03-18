@@ -4,7 +4,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Authenticator\JWTAuthenticator;
 
-return static function (ContainerConfigurator $container) {
+return static function (ContainerConfigurator $container): void {
     $services = $container->services();
 
     $services->set('lexik_jwt_authentication.security.jwt_authenticator', JWTAuthenticator::class)

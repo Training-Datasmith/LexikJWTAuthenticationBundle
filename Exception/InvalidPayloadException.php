@@ -11,14 +11,11 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
  */
 class InvalidPayloadException extends AuthenticationException
 {
-    private string $invalidKey;
-
     /**
      * @param string $invalidKey The key that cannot be found in the payload
      */
-    public function __construct(string $invalidKey)
+    public function __construct(private readonly string $invalidKey)
     {
-        $this->invalidKey = $invalidKey;
     }
 
     /**

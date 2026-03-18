@@ -11,11 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class CookieTokenExtractor implements TokenExtractorInterface
 {
-    protected string $name;
-
-    public function __construct(string $name)
+    public function __construct(protected string $name)
     {
-        $this->name = $name;
     }
 
     /**

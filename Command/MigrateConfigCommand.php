@@ -35,29 +35,17 @@ final class MigrateConfigCommand extends AbstractConfigCommand
     protected static $defaultName = 'lexik:jwt:migrate-config';
 
     /**
-     * @var KeyLoaderInterface
-     */
-    private $keyLoader;
-
-    /**
-     * @var string
-     */
-    private $signatureAlgorithm;
-
-    /**
      * @var string
      */
     private $passphrase;
 
     public function __construct(
-        KeyLoaderInterface $keyLoader,
+        private readonly KeyLoaderInterface $keyLoader,
         string $passphrase,
-        string $signatureAlgorithm
+        private readonly string $signatureAlgorithm
     ) {
         parent::__construct();
-        $this->keyLoader = $keyLoader;
         $this->passphrase = $passphrase === '' ? null : $passphrase;
-        $this->signatureAlgorithm = $signatureAlgorithm;
     }
 
     /**
@@ -73,8 +61,6 @@ final class MigrateConfigCommand extends AbstractConfigCommand
 
     /**
      * {@inheritdoc}
-     *
-     * @return int
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -130,18 +116,13 @@ final class MigrateConfigCommand extends AbstractConfigCommand
     private function getKeyset(JWK $key, string $algorithm): JWKSet
     {
         $keyset = new JWKSet([$key->toPublic()]);
-        switch ($key->get('kty')) {
-            case 'oct':
-                return $this->withOctKeys($keyset, $algorithm);
-            case 'OKP':
-                return $this->withOkpKeys($keyset, $algorithm, $key->get('crv'));
-            case 'EC':
-                return $this->withEcKeys($keyset, $algorithm, $key->get('crv'));
-            case 'RSA':
-                return $this->withRsaKeys($keyset, $algorithm);
-            default:
-                throw new \InvalidArgumentException('Unsupported key type.');
-        }
+        return match ($key->get('kty')) {
+            'oct' => $this->withOctKeys($keyset, $algorithm),
+            'OKP' => $this->withOkpKeys($keyset, $algorithm, $key->get('crv')),
+            'EC' => $this->withEcKeys($keyset, $algorithm, $key->get('crv')),
+            'RSA' => $this->withRsaKeys($keyset, $algorithm),
+            default => throw new \InvalidArgumentException('Unsupported key type.'),
+        };
     }
 
     private function withOctKeys(JWKSet $keyset, string $algorithm): JWKSet
@@ -185,7 +166,7 @@ final class MigrateConfigCommand extends AbstractConfigCommand
             'alg' => $this->signatureAlgorithm,
         ];
         // No public key for HMAC
-        if (false !== strpos($this->signatureAlgorithm, 'HS')) {
+        if (str_contains($this->signatureAlgorithm, 'HS')) {
             return JWKFactory::createFromSecret(
                 $this->keyLoader->loadKey(KeyLoaderInterface::TYPE_PUBLIC),
                 $additionalValues
@@ -298,17 +279,12 @@ final class MigrateConfigCommand extends AbstractConfigCommand
 
     private function getKeySize(string $algorithm): int
     {
-        switch ($algorithm) {
-            case 'HS256':
-            case 'HS256/64':
-                return 256;
-            case 'HS384':
-                return 384;
-            case 'HS512':
-                return 512;
-            default:
-                throw new \LogicException('Unsupported algorithm');
-        }
+        return match ($algorithm) {
+            'HS256', 'HS256/64' => 256,
+            'HS384' => 384,
+            'HS512' => 512,
+            default => throw new \LogicException('Unsupported algorithm'),
+        };
     }
 
     private function getOptions(string $algorithm): array

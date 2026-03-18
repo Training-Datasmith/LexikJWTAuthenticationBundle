@@ -11,14 +11,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class AuthorizationHeaderTokenExtractor implements TokenExtractorInterface
 {
-    protected ?string $prefix;
-
-    protected string $name;
-
-    public function __construct(?string $prefix, string $name)
+    public function __construct(protected ?string $prefix, protected string $name)
     {
-        $this->prefix = $prefix;
-        $this->name = $name;
     }
 
     /**

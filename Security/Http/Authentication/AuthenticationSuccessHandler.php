@@ -24,20 +24,11 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  */
 class AuthenticationSuccessHandler implements AuthenticationSuccessHandlerInterface
 {
-    protected JWTTokenManagerInterface $jwtManager;
-    protected EventDispatcherInterface $dispatcher;
-    protected bool $removeTokenFromBodyWhenCookiesUsed;
-    private iterable $cookieProviders;
-
     /**
      * @param iterable|JWTCookieProvider[] $cookieProviders
      */
-    public function __construct(JWTTokenManagerInterface $jwtManager, EventDispatcherInterface $dispatcher, iterable $cookieProviders = [], bool $removeTokenFromBodyWhenCookiesUsed = true)
+    public function __construct(protected JWTTokenManagerInterface $jwtManager, protected EventDispatcherInterface $dispatcher, private readonly iterable $cookieProviders = [], protected bool $removeTokenFromBodyWhenCookiesUsed = true)
     {
-        $this->jwtManager = $jwtManager;
-        $this->dispatcher = $dispatcher;
-        $this->cookieProviders = $cookieProviders;
-        $this->removeTokenFromBodyWhenCookiesUsed = $removeTokenFromBodyWhenCookiesUsed;
     }
 
     /**
