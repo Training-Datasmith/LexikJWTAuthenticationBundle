@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lexik\Bundle\JWTAuthenticationBundle\Services\PayloadEnrichment;
 
 use Lexik\Bundle\JWTAuthenticationBundle\Services\PayloadEnrichmentInterface;
@@ -12,14 +14,14 @@ class ChainEnrichmentTest extends TestCase
     {
         $payload = ['foo' => 'bar'];
 
-        $enrichmentFoo = new class() implements PayloadEnrichmentInterface {
+        $enrichmentFoo = new class () implements PayloadEnrichmentInterface {
             public function enrich(UserInterface $user, array &$payload): void
             {
                 $payload['foo'] = 'baz';
             }
         };
 
-        $enrichmentBar = new class() implements PayloadEnrichmentInterface {
+        $enrichmentBar = new class () implements PayloadEnrichmentInterface {
             public function enrich(UserInterface $user, array &$payload): void
             {
                 $payload['bar'] = 'qux';

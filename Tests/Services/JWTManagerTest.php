@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lexik\Bundle\JWTAuthenticationBundle\Tests\Services;
 
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
@@ -57,7 +59,7 @@ class JWTManagerTest extends TestCase
             ->with($this->arrayHasKey('baz'))
             ->willReturn('secrettoken');
 
-        $manager = new JWTManager($encoder, $dispatcher, 'username', new class() implements PayloadEnrichmentInterface {
+        $manager = new JWTManager($encoder, $dispatcher, 'username', new class () implements PayloadEnrichmentInterface {
             public function enrich(UserInterface $user, array &$payload): void
             {
                 $payload['baz'] = 'qux';
@@ -103,7 +105,7 @@ class JWTManagerTest extends TestCase
             ->with($this->arrayHasKey('baz'))
             ->willReturn('secrettoken');
 
-        $manager = new JWTManager($encoder, $dispatcher, 'username', new class() implements PayloadEnrichmentInterface {
+        $manager = new JWTManager($encoder, $dispatcher, 'username', new class () implements PayloadEnrichmentInterface {
             public function enrich(UserInterface $user, array &$payload): void
             {
                 $payload['baz'] = 'qux';

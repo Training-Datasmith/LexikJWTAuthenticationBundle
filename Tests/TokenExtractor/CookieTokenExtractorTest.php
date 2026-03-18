@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lexik\Bundle\JWTAuthenticationBundle\Tests\TokenExtractor;
 
 use Lexik\Bundle\JWTAuthenticationBundle\TokenExtractor\CookieTokenExtractor;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lexik\Bundle\JWTAuthenticationBundle\Tests\Services\BlockedToken;
 
 use DateTime;
@@ -26,9 +28,9 @@ class CacheItemPoolBlockedTokenManagerTest extends TestCase
                 'iat' => self::IAT,
                 'jti' => self::JTI,
                 'roles' => [
-                    'ROLE_USER'
+                    'ROLE_USER',
                 ],
-                'username' => 'lexik'
+                'username' => 'lexik',
             ]
         );
     }
@@ -41,11 +43,11 @@ class CacheItemPoolBlockedTokenManagerTest extends TestCase
         $blockedTokenManager->add(
             [
                 'iat' => self::IAT,
-                "exp" => (int) (new DateTime('2050-01-01'))->format('U'),
+                'exp' => (int) (new DateTime('2050-01-01'))->format('U'),
                 'roles' => [
-                    'ROLE_USER'
+                    'ROLE_USER',
                 ],
-                'username' => 'lexik'
+                'username' => 'lexik',
             ]
         );
     }
@@ -59,11 +61,11 @@ class CacheItemPoolBlockedTokenManagerTest extends TestCase
                 [
                     'iat' => self::IAT,
                     'jti' => self::JTI,
-                    "exp" => (int) (new DateTime('2020-01-01'))->format('U'),
+                    'exp' => (int) (new DateTime('2020-01-01'))->format('U'),
                     'roles' => [
-                        'ROLE_USER'
+                        'ROLE_USER',
                     ],
-                    'username' => 'lexik'
+                    'username' => 'lexik',
                 ]
             )
         );
@@ -89,11 +91,11 @@ class CacheItemPoolBlockedTokenManagerTest extends TestCase
                 [
                     'iat' => self::IAT,
                     'jti' => self::JTI,
-                    "exp" => (int) $expirationDateTime->format('U'),
+                    'exp' => (int) $expirationDateTime->format('U'),
                     'roles' => [
-                        'ROLE_USER'
+                        'ROLE_USER',
                     ],
-                    'username' => 'lexik'
+                    'username' => 'lexik',
                 ]
             )
         );
@@ -122,11 +124,11 @@ class CacheItemPoolBlockedTokenManagerTest extends TestCase
         $payload = [
             'iat' => self::IAT,
             'jti' => self::JTI,
-            "exp" => (int) $expirationDateTime->format('U'),
+            'exp' => (int) $expirationDateTime->format('U'),
             'roles' => [
-                'ROLE_USER'
+                'ROLE_USER',
             ],
-            'username' => 'lexik'
+            'username' => 'lexik',
         ];
 
         self::assertFalse($blockedTokenManager->has($payload));
@@ -135,11 +137,11 @@ class CacheItemPoolBlockedTokenManagerTest extends TestCase
             [
                 'iat' => self::IAT,
                 'jti' => self::JTI,
-                "exp" => (int) $expirationDateTime->format('U'),
+                'exp' => (int) $expirationDateTime->format('U'),
                 'roles' => [
-                    'ROLE_USER'
+                    'ROLE_USER',
                 ],
-                'username' => 'lexik'
+                'username' => 'lexik',
             ]
         );
         self::assertTrue($blockedTokenManager->has($payload));

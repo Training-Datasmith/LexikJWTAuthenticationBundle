@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lexik\Bundle\JWTAuthenticationBundle\Command;
 
 use Jose\Bundle\JoseFramework\JoseFrameworkBundle;
@@ -12,11 +14,7 @@ use Jose\Component\Core\Util\Base64UrlSafe;
 use Jose\Component\Encryption\Algorithm\ContentEncryptionAlgorithm;
 use Jose\Component\Encryption\Algorithm\KeyEncryptionAlgorithm;
 use Jose\Component\Encryption\JWEBuilder;
-use Jose\Component\Encryption\JWELoader;
 use Jose\Component\KeyManagement\JWKFactory;
-use Jose\Component\Signature\JWSBuilder;
-use Jose\Component\Signature\JWSLoader;
-use Lexik\Bundle\JWTAuthenticationBundle\Services\KeyLoader\KeyLoaderInterface;
 use Symfony\Bundle\FrameworkBundle\Command\AbstractConfigCommand;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -77,12 +75,12 @@ final class EnableEncryptionConfigCommand extends AbstractConfigCommand
 
         $algorithms = $this->algorithmManagerFactory->all();
         $availableKeyEncryptionAlgorithms = array_map(
-            static fn(Algorithm $algorithm): string => $algorithm->name(),
-            array_filter($algorithms, static fn(Algorithm $algorithm): bool => $algorithm instanceof KeyEncryptionAlgorithm && $algorithm->name() !== 'dir')
+            static fn (Algorithm $algorithm): string => $algorithm->name(),
+            array_filter($algorithms, static fn (Algorithm $algorithm): bool => $algorithm instanceof KeyEncryptionAlgorithm && $algorithm->name() !== 'dir')
         );
         $availableContentEncryptionAlgorithms = array_map(
-            static fn(Algorithm $algorithm): string => $algorithm->name(),
-            array_filter($algorithms, static fn(Algorithm $algorithm): bool => $algorithm instanceof ContentEncryptionAlgorithm)
+            static fn (Algorithm $algorithm): string => $algorithm->name(),
+            array_filter($algorithms, static fn (Algorithm $algorithm): bool => $algorithm instanceof ContentEncryptionAlgorithm)
         );
 
         $keyEncryptionAlgorithmAlias = $io->choice('Key Encryption Algorithm', $availableKeyEncryptionAlgorithms);
@@ -303,7 +301,7 @@ final class EnableEncryptionConfigCommand extends AbstractConfigCommand
         return [
             'use' => 'enc',
             'alg' => $algorithm,
-            'kid' => Base64UrlSafe::encodeUnpadded(random_bytes(16))
+            'kid' => Base64UrlSafe::encodeUnpadded(random_bytes(16)),
         ];
     }
 }

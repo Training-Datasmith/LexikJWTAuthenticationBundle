@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lexik\Bundle\JWTAuthenticationBundle\DependencyInjection\Security\Factory;
 
 use Lexik\Bundle\JWTAuthenticationBundle\Security\User\JWTUser;

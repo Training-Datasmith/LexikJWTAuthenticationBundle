@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lexik\Bundle\JWTAuthenticationBundle\EventListener;
 
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTAuthenticatedEvent;

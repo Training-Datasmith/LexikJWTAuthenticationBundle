@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lexik\Bundle\JWTAuthenticationBundle\Response;
 
 use Symfony\Component\HttpFoundation\JsonResponse;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lexik\Bundle\JWTAuthenticationBundle\Security\User;
 
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\UserNotFoundException;

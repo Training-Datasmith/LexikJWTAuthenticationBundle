@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lexik\Bundle\JWTAuthenticationBundle\Response;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,7 +26,7 @@ final class JWTAuthenticationFailureResponse extends JsonResponse
      */
     public function setData(mixed $data = []): static
     {
-        return parent::setData((array)$data + ["code" => $this->statusCode, "message" => $this->getMessage()]);
+        return parent::setData((array)$data + ['code' => $this->statusCode, 'message' => $this->getMessage()]);
     }
 
     /**

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lexik\Bundle\JWTAuthenticationBundle\Tests\Functional;
 
 use ApiPlatform\Metadata\Util\IriHelper;
@@ -13,7 +15,6 @@ use Symfony\Bundle\SecurityBundle\SecurityBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 
 class AppKernel extends Kernel
 {
@@ -109,7 +110,7 @@ class AppKernel extends Kernel
                     'formats' => [
                         'jsonld' => ['application/ld+json'],
                         'json' => ['application/json'],
-                    ]
+                    ],
                 ];
 
                 if (!class_exists(IriHelper::class)) {
@@ -131,7 +132,7 @@ class AppKernel extends Kernel
         $loader->load(function (ContainerBuilder $container) use ($router, $sessionConfig) {
             $container->prependExtensionConfig('framework', [
                 'router' => $router,
-                'session' => $sessionConfig
+                'session' => $sessionConfig,
             ]);
         });
 

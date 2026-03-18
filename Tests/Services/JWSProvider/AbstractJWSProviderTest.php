@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lexik\Bundle\JWTAuthenticationBundle\Tests\Services\JWSProvider;
 
 use Lexik\Bundle\JWTAuthenticationBundle\Signature\CreatedJWS;

@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lexik\Bundle\JWTAuthenticationBundle\EventListener;
 
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTDecodeFailureException;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\MissingClaimException;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\BlockedTokenManagerInterface;
-use Lexik\Bundle\JWTAuthenticationBundle\Services\CacheItemPoolBlockedTokenManager;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\TokenExtractor\TokenExtractorInterface;
 use Symfony\Component\HttpFoundation\Request;

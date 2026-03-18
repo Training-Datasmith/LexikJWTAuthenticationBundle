@@ -1,10 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lexik\Bundle\JWTAuthenticationBundle\Encoder;
 
-use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTDecodeFailureException;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTEncodeFailureException;
-use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTFailureException;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\WebToken\AccessTokenBuilder;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\WebToken\AccessTokenLoader;
 

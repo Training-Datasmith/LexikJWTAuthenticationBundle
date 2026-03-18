@@ -20,6 +20,6 @@ return static function (ECSConfig $config): void {
     $config->skip([
         __DIR__ . '/.github',
         __DIR__ . '/vendor',
-        PhpdocScalarFixer::class
+        PhpdocScalarFixer::class,
     ]);
 };

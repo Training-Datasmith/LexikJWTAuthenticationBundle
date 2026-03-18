@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lexik\Bundle\JWTAuthenticationBundle\Command;
 
 use Jose\Bundle\JoseFramework\JoseFrameworkBundle;
@@ -9,7 +11,6 @@ use Jose\Component\Core\JWKSet;
 use Jose\Component\Core\Util\Base64UrlSafe;
 use Jose\Component\KeyManagement\JWKFactory;
 use Jose\Component\Signature\JWSBuilder;
-use Jose\Component\Signature\JWSLoader;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\KeyLoader\KeyLoaderInterface;
 use Symfony\Bundle\FrameworkBundle\Command\AbstractConfigCommand;
 use Symfony\Component\Config\Definition\Processor;
@@ -95,14 +96,14 @@ final class MigrateConfigCommand extends AbstractConfigCommand
             'signature' => [
                 'signature_algorithm' => $this->signatureAlgorithm,
                 'key' => json_encode($key, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
-            ]
+            ],
         ];
         $config['access_token_verification'] = [
             'enabled' => true,
             'signature' => [
                 'allowed_signature_algorithms' => [$this->signatureAlgorithm],
                 'keyset' => json_encode($keyset, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
-            ]
+            ],
         ];
 
         $io->comment('Please replace the current configuration with the following parameters.');
@@ -292,7 +293,7 @@ final class MigrateConfigCommand extends AbstractConfigCommand
         return [
             'use' => 'sig',
             'alg' => $algorithm,
-            'kid' => Base64UrlSafe::encodeUnpadded(random_bytes(16))
+            'kid' => Base64UrlSafe::encodeUnpadded(random_bytes(16)),
         ];
     }
 }

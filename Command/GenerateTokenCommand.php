@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lexik\Bundle\JWTAuthenticationBundle\Command;
 
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
@@ -21,7 +23,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 class GenerateTokenCommand extends Command
 {
     public function __construct(private readonly JWTTokenManagerInterface $tokenManager, /** @var \Traversable<int, UserProviderInterface> */
-    private readonly \Traversable $userProviders)
+        private readonly \Traversable $userProviders)
     {
         parent::__construct();
     }

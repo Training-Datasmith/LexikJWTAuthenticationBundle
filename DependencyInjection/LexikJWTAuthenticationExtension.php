@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lexik\Bundle\JWTAuthenticationBundle\DependencyInjection;
 
 use ApiPlatform\Symfony\Bundle\ApiPlatformBundle;
@@ -96,7 +98,7 @@ class LexikJWTAuthenticationExtension extends Extension
                 if ($attributes['partitioned'] && Kernel::VERSION < '6.4') {
                     throw new \LogicException(sprintf('The `partitioned` option for cookies is only available for Symfony 6.4 and above. You are currently on version %s', Kernel::VERSION));
                 }
-                
+
                 $container
                     ->setDefinition($id = "lexik_jwt_authentication.cookie_provider.$name", new ChildDefinition('lexik_jwt_authentication.cookie_provider'))
                     ->replaceArgument(0, $name)

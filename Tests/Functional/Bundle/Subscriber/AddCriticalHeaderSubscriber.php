@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lexik\Bundle\JWTAuthenticationBundle\Tests\Functional\Bundle\Subscriber;
 
 use Lexik\Bundle\JWTAuthenticationBundle\Event\BeforeJWEComputationEvent;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Functional\Command;
 
 use Lexik\Bundle\JWTAuthenticationBundle\Tests\Functional\TestCase;

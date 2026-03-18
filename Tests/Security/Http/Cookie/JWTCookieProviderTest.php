@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lexik\Bundle\JWTAuthenticationBundle\Tests\Security\Http\Cookie;
 
 use Lexik\Bundle\JWTAuthenticationBundle\Security\Http\Cookie\JWTCookieProvider;
@@ -14,8 +16,8 @@ class JWTCookieProviderTest extends TestCase
     public function testCreateCookieWithExpiration()
     {
         $expiresAt = time() + 3600;
-        $cookieProvider = new JWTCookieProvider("default_name");
-        $cookie = $cookieProvider->createCookie("header.payload.signature", "name", $expiresAt);
+        $cookieProvider = new JWTCookieProvider('default_name');
+        $cookie = $cookieProvider->createCookie('header.payload.signature', 'name', $expiresAt);
 
         $this->assertSame($expiresAt, $cookie->getExpiresTime());
     }
@@ -23,16 +25,16 @@ class JWTCookieProviderTest extends TestCase
     public function testCreateCookieWithLifetime()
     {
         $lifetime = 3600;
-        $cookieProvider = new JWTCookieProvider("default_name", $lifetime);
-        $cookie = $cookieProvider->createCookie("header.payload.signature");
+        $cookieProvider = new JWTCookieProvider('default_name', $lifetime);
+        $cookie = $cookieProvider->createCookie('header.payload.signature');
 
         $this->assertSame(time() + $lifetime, $cookie->getExpiresTime());
     }
 
     public function testCreateSessionCookie()
     {
-        $cookieProvider = new JWTCookieProvider("default_name", 0);
-        $cookie = $cookieProvider->createCookie("header.payload.signature");
+        $cookieProvider = new JWTCookieProvider('default_name', 0);
+        $cookie = $cookieProvider->createCookie('header.payload.signature');
 
         $this->assertSame(0, $cookie->getExpiresTime());
     }
@@ -43,7 +45,7 @@ class JWTCookieProviderTest extends TestCase
     public function testCreateCookieHttpOnlyFlag(bool $defaultHttpOnlyFlag, bool $httpOnlyParam, bool $expectedFlag): void
     {
         $cookieProvider = new JWTCookieProvider(
-            "default_name",
+            'default_name',
             0,
             Cookie::SAMESITE_LAX,
             '/',
@@ -52,7 +54,7 @@ class JWTCookieProviderTest extends TestCase
             $defaultHttpOnlyFlag
         );
         $cookie = $cookieProvider->createCookie(
-            "header.payload.signature",
+            'header.payload.signature',
             null,
             null,
             null,
@@ -71,7 +73,7 @@ class JWTCookieProviderTest extends TestCase
     public function testCreateCookieSecureFlag(bool $defaultSecureFlag, bool $secureParam, bool $expectedFlag): void
     {
         $cookieProvider = new JWTCookieProvider(
-            "default_name",
+            'default_name',
             0,
             Cookie::SAMESITE_LAX,
             '/',
@@ -79,7 +81,7 @@ class JWTCookieProviderTest extends TestCase
             $defaultSecureFlag
         );
         $cookie = $cookieProvider->createCookie(
-            "header.payload.signature",
+            'header.payload.signature',
             null,
             null,
             null,
@@ -97,7 +99,7 @@ class JWTCookieProviderTest extends TestCase
     public function testCreateCookiePartitionedFlag(bool $defaultPartitionedFlag, bool $parititionedParam, bool $expectedFlag): void
     {
         $cookieProvider = new JWTCookieProvider(
-            "default_name",
+            'default_name',
             0,
             Cookie::SAMESITE_LAX,
             '/',
@@ -108,7 +110,7 @@ class JWTCookieProviderTest extends TestCase
             $defaultPartitionedFlag
         );
         $cookie = $cookieProvider->createCookie(
-            "header.payload.signature",
+            'header.payload.signature',
             null,
             null,
             null,

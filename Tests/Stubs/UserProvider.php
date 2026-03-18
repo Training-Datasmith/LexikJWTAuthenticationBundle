@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lexik\Bundle\JWTAuthenticationBundle\Tests\Stubs;
 
 use Symfony\Component\Security\Core\Exception\UserNotFoundException;
@@ -19,7 +21,7 @@ final class UserProvider implements UserProviderInterface, ResetInterface
             'password' => 'dummy',
             'roles' => ['ROLE_USER'],
             'enabled' => true,
-        ]
+        ],
     ];
 
     /**

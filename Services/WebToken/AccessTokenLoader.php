@@ -1,13 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Lexik\Bundle\JWTAuthenticationBundle\Services\WebToken;
 
-use Jose\Bundle\JoseFramework\Services\ClaimCheckerManager;
 use Jose\Bundle\JoseFramework\Services\ClaimCheckerManagerFactory;
-use Jose\Bundle\JoseFramework\Services\HeaderCheckerManager;
-use Jose\Bundle\JoseFramework\Services\JWELoader;
 use Jose\Bundle\JoseFramework\Services\JWELoaderFactory;
-use Jose\Bundle\JoseFramework\Services\JWSLoader;
 use Jose\Bundle\JoseFramework\Services\JWSLoaderFactory;
 use Jose\Component\Checker\InvalidClaimException;
 use Jose\Component\Checker\MissingMandatoryClaimException;
