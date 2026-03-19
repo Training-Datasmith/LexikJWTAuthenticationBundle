@@ -11,6 +11,8 @@ use Lexik\Bundle\JWTAuthenticationBundle\Exception\MissingClaimException;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\BlockedTokenManagerInterface;
 use Psr\Cache\CacheItemPoolInterface;
 
+use function hash;
+
 class CacheItemPoolBlockedTokenManager implements BlockedTokenManagerInterface
 {
     private $cacheJwt;
@@ -40,7 +42,7 @@ class CacheItemPoolBlockedTokenManager implements BlockedTokenManagerInterface
             throw new MissingClaimException('jti');
         }
 
-        $cacheItem = $this->cacheJwt->getItem($payload['jti']);
+        $cacheItem = $this->cacheJwt->getItem($this->getCacheKey($payload['jti']));
         $cacheItem->set([]);
         $cacheItem->expiresAt($cacheExpiration);
         $this->cacheJwt->save($cacheItem);
@@ -54,7 +56,7 @@ class CacheItemPoolBlockedTokenManager implements BlockedTokenManagerInterface
             throw new MissingClaimException('jti');
         }
 
-        return $this->cacheJwt->hasItem($payload['jti']);
+        return $this->cacheJwt->hasItem($this->getCacheKey($payload['jti']));
     }
 
     public function remove(array $payload): void
@@ -63,6 +65,11 @@ class CacheItemPoolBlockedTokenManager implements BlockedTokenManagerInterface
             throw new MissingClaimException('jti');
         }
 
-        $this->cacheJwt->deleteItem($payload['jti']);
+        $this->cacheJwt->deleteItem($this->getCacheKey($payload['jti']));
+    }
+
+    private function getCacheKey(string $jti): string
+    {
+        return hash('sha256', $jti);
     }
 }
